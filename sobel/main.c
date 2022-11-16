@@ -9,6 +9,8 @@
 #include "vga.h"
 #include "dipswitch.h"
 #include "sobel.h"
+#include "sys/alt_timestamp.h" 		// include due to profiling
+#include "alt_types.h" 		// include due to profiling
 
 int main()
 {
@@ -17,6 +19,20 @@ int main()
   unsigned char *grayscale;
   unsigned char current_mode;
   unsigned char mode;
+
+  int wait_cnt = 0; 		// wait at the end of loop so that printf shows result of current execution
+  int max_wait = 100000;	// wait until wait_cnt reaches this value
+
+  //timer values for profiling
+  alt_u32 start_sobel_x = 0;
+  alt_u32 end_sobel_x = 0;
+  alt_u32 start_sobel_y = 0;
+  alt_u32 end_sobel_y = 0;
+  alt_u32 start_sobel_th = 0;
+  alt_u32 end_sobel_th = 0;
+  alt_u32 start_grayscale = 0;
+  alt_u32 end_grayscale = 0;
+
   init_LCD();
   init_camera();
   vga_set_swap(VGA_QuarterScreen|VGA_Grayscale);
@@ -47,9 +63,12 @@ int main()
 		      	  		  vga_set_pointer(image);
 		      	  	   }
 		      	  	   break;
-		      case 1 : conv_grayscale((void *)image,
+		      case 1 : alt_timestamp_start();
+		    	  	   start_grayscale = alt_timestamp();
+		    	  	   conv_grayscale((void *)image,
 		    		                  cam_get_xsize()>>1,
 		    		                  cam_get_ysize());
+		    	  	   end_grayscale = alt_timestamp();
 		               grayscale = get_grayscale_picture();
 		               transfer_LCD_with_dma(&grayscale[16520],
 		      		                	cam_get_xsize()>>1,
@@ -59,9 +78,12 @@ int main()
 		      	  		  vga_set_pointer(grayscale);
 		      	  	   }
 		      	  	   break;
-		      case 2 : conv_grayscale((void *)image,
+		      case 2 : alt_timestamp_start();
+		    	  	   start_grayscale = alt_timestamp();
+		    	  	   conv_grayscale((void *)image,
 		    		                  cam_get_xsize()>>1,
 		    		                  cam_get_ysize());
+		    	  	   end_grayscale = alt_timestamp();
 		               grayscale = get_grayscale_picture();
 		               sobel_x_with_rgb(grayscale);
 		               image = GetSobel_rgb();
@@ -73,11 +95,17 @@ int main()
 		      	  		  vga_set_pointer(image);
 		      	  	   }
 		      	  	   break;
-		      case 3 : conv_grayscale((void *)image,
+		      case 3 : alt_timestamp_start();
+		    	  	   start_grayscale = alt_timestamp();
+		    	  	   conv_grayscale((void *)image,
 		    		                  cam_get_xsize()>>1,
 		    		                  cam_get_ysize());
+		    	  	   end_grayscale = alt_timestamp();
 		               grayscale = get_grayscale_picture();
+		               alt_timestamp_start();
+		               start_sobel_x = alt_timestamp();
 		               sobel_x(grayscale);
+		               end_sobel_x = alt_timestamp();
 		               sobel_y_with_rgb(grayscale);
 		               image = GetSobel_rgb();
 		               transfer_LCD_with_dma(&image[16520],
@@ -88,13 +116,25 @@ int main()
 		      	  		  vga_set_pointer(image);
 		      	  	   }
 		      	  	   break;
-		      default: conv_grayscale((void *)image,
+		      default: alt_timestamp_start();
+		    	  	   start_grayscale = alt_timestamp();
+		    	  	   conv_grayscale((void *)image,
 	                                  cam_get_xsize()>>1,
 	                                  cam_get_ysize());
+		    	  	   end_grayscale = alt_timestamp();
                        grayscale = get_grayscale_picture();
+                       alt_timestamp_start();
+                       start_sobel_x = alt_timestamp();
                        sobel_x(grayscale);
+                       end_sobel_x = alt_timestamp();
+                       alt_timestamp_start();
+                       start_sobel_y = alt_timestamp();
                        sobel_y(grayscale);
+                       end_sobel_y = alt_timestamp();
+                       alt_timestamp_start();
+                       start_sobel_th = alt_timestamp();
                        sobel_threshold(128);
+                       end_sobel_th = alt_timestamp();
                        grayscale=GetSobelResult();
 		               transfer_LCD_with_dma(&grayscale[16520],
 		      		                	cam_get_xsize()>>1,
@@ -105,6 +145,24 @@ int main()
 		      	  	   }
 		      	  	   break;
 		      }
+		      //print differences
+		      printf("-- CYCLE TIME OF FUNCTIONS --\n");
+		      printf("[sobel_x]   : dC = %d\n",end_sobel_x-start_sobel_x);
+		      printf("[sobel_y]   : dC = %d\n",end_sobel_y-start_sobel_y);
+		      printf("[sobel_th]  : dC = %d\n",end_sobel_th-start_sobel_th);
+		      printf("[grayscale] : dC = %d\n",end_grayscale-start_grayscale);
+
+		      while(wait_cnt < max_wait) { wait_cnt++; }
+
+		      // reset timervalues
+		      start_sobel_x = 0;
+		      end_sobel_x = 0;
+			  start_sobel_y = 0;
+			  end_sobel_y = 0;
+			  start_sobel_th = 0;
+			  end_sobel_th = 0;
+			  start_grayscale = 0;
+			  end_grayscale = 0;
 		  }
 	  }
   } while (1);
