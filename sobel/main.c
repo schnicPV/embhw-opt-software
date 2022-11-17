@@ -152,7 +152,7 @@ int main()
 		      printf("[sobel_th]  : dC = %d\n",end_sobel_th-start_sobel_th);
 		      printf("[grayscale] : dC = %d\n",end_grayscale-start_grayscale);
 
-		      while(wait_cnt < max_wait) { wait_cnt++; }
+		      //while(wait_cnt < max_wait) { wait_cnt++; }
 
 		      // reset timervalues
 		      start_sobel_x = 0;
@@ -163,6 +163,7 @@ int main()
 			  end_sobel_th = 0;
 			  start_grayscale = 0;
 			  end_grayscale = 0;
+			  wait_cnt = 0;
 		  }
 	  }
   } while (1);
