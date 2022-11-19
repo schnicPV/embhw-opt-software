@@ -6,12 +6,13 @@
 		</buildSystem>
 		<cconfiguration id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.1270168421">
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration buildProperties="" description="" id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.1270168421" name="Nios II" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+				<configuration artifactName="${ProjName}" buildProperties="" description="" id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.1270168421" name="Nios II" parent="org.eclipse.cdt.build.core.prefbase.cfg">
 					<folderInfo id="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.1270168421." name="/" resourcePath="">
 						<toolChain id="altera.nios2.mingw.gcc4.1193856641" name="MinGW Nios II GCC4" superClass="altera.nios2.mingw.gcc4">
 							<targetPlatform id="altera.nios2.mingw.gcc4.883101041" name="Nios II" superClass="altera.nios2.mingw.gcc4"/>
 							<builder buildPath="${workspace_loc://sobel_bsp}" id="altera.tool.gnu.builder.mingw.1741665439" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="altera.tool.gnu.builder.mingw"/>
 							<tool id="altera.tool.gnu.c.compiler.mingw.354909182" name="Nios II GCC C Compiler" superClass="altera.tool.gnu.c.compiler.mingw">
+								<option id="gnu.c.compiler.option.optimization.level.879681758" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.c.optimization.level.most" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1685057732" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="altera.tool.gnu.cpp.compiler.mingw.542940657" name="Nios II GCC C++ Compiler" superClass="altera.tool.gnu.cpp.compiler.mingw">
@@ -52,5 +53,10 @@
 		<scannerConfigBuildInfo instanceId="preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.1270168421;preference.org.eclipse.cdt.managedbuilder.core.configurationDataProvider.1270168421.;altera.tool.gnu.cpp.compiler.mingw.542940657;cdt.managedbuild.tool.gnu.cpp.compiler.input.412488913">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Nios II">
+			<resource resourceType="PROJECT" workspacePath="/sobel_bsp"/>
+		</configuration>
 	</storageModule>
 </cproject>
