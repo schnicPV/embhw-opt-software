@@ -17,6 +17,9 @@ const char gy_array[3][3] = { {1, 2, 1},
                    {0, 0, 0},
                    {-1,-2,-1}};
 
+const char * pgx_array = &gx_array;
+const char * pgy_array = &gy_array;
+
 void init_sobel_arrays(int width , int height) {
 	int loop;
 	sobel_width = width;
@@ -136,6 +139,41 @@ void sobel_threshold(short threshold) {
 			sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
 		}
 	}
+}
+
+void sobel_complete( unsigned char *source )
+{
+   short result = 0;
+   int x,y;
+   for (y = 1 ; y < (sobel_height-1) ; y++) {
+	 for (x = 1 ; x < (sobel_width-1) ; x++) {
+	   // replace sobel_x with in-line sobel_mac
+	   result += pgx_array[0] * source[(y-1)*sobel_width+(x-1)];
+	   result += pgx_array[1] * source[(y-1)*sobel_width+x];
+	   result += pgx_array[2] * source[(y-1)*sobel_width+(x+1)];
+	   result += pgx_array[3] * source[y*sobel_width+(x-1)];
+	   result += pgx_array[4] * source[y*sobel_width+x];
+	   result += pgx_array[5] * source[y*sobel_width+(x+1)];
+	   result += pgx_array[6] * source[(y+1)*sobel_width+(x-1)];
+	   result += pgx_array[7] * source[(y+1)*sobel_width+x];
+	   result += pgx_array[8] * source[(y+1)*sobel_width+(x+1)];
+	   sobel_x_result[y*sobel_width+x] = result; 	//sobel_mac(source,x,y,gx_array,sobel_width);
+
+	   result = 0;
+
+	   // replace sobel_y with in-line sobel_mac
+	   result += pgy_array[0] * source[(y-1)*sobel_width+(x-1)];
+	   result += pgy_array[1] * source[(y-1)*sobel_width+x];
+	   result += pgy_array[2] * source[(y-1)*sobel_width+(x+1)];
+	   result += pgy_array[3] * source[y*sobel_width+(x-1)];
+	   result += pgy_array[4] * source[y*sobel_width+x];
+	   result += pgy_array[5] * source[y*sobel_width+(x+1)];
+	   result += pgy_array[6] * source[(y+1)*sobel_width+(x-1)];
+	   result += pgy_array[7] * source[(y+1)*sobel_width+x];
+	   result += pgy_array[8] * source[(y+1)*sobel_width+(x+1)];
+	   sobel_y_result[y*sobel_width+x] = result; 	//sobel_mac(source,x,y,gy_array,sobel_width);
+	 }
+   } // end sobel_x in-lining
 }
 
 unsigned short *GetSobel_rgb() {
