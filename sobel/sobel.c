@@ -8,20 +8,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "io.h"
+#include "sobel.h"
 
 const char gx_array[3][3] = {{-1,0,1},
-                             {-2,0,2},
-                             {-1,0,1}};
+                  {-2,0,2},
+                  {-1,0,1}};
 const char gy_array[3][3] = { {1, 2, 1},
-                              {0, 0, 0},
-                             {-1,-2,-1}};
-
-short *sobel_x_result;
-short *sobel_y_result;
-unsigned short *sobel_rgb565;
-unsigned char *sobel_result;
-int sobel_width;
-int sobel_height;
+                   {0, 0, 0},
+                   {-1,-2,-1}};
 
 void init_sobel_arrays(int width , int height) {
 	int loop;
