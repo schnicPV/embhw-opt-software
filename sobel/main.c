@@ -153,7 +153,7 @@ int main()
                            sobel_x_result[y*sobel_width+x] = result; 	//sobel_mac(source,x,y,gx_array,sobel_width);
                          }
                        } // end sobel_x in-lining*/
-                       sobel_complete(grayscale);
+                       sobel_complete(grayscale, 128);
                        end_sobel_x = alt_timestamp();
 
                        /*alt_timestamp_start();
@@ -176,10 +176,10 @@ int main()
                        } // end sobel_y in-lining
                        end_sobel_y = alt_timestamp();*/
 
-                       alt_timestamp_start();
-                       start_sobel_th = alt_timestamp();
-                       sobel_threshold(128);
-                       end_sobel_th = alt_timestamp();
+//                       alt_timestamp_start();
+//                       start_sobel_th = alt_timestamp();
+//                       sobel_threshold(128);
+//                       end_sobel_th = alt_timestamp();
                        grayscale=GetSobelResult();
 		               transfer_LCD_with_dma(&grayscale[16520],
 		      		                	cam_get_xsize()>>1,

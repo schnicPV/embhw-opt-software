@@ -141,13 +141,16 @@ void sobel_threshold(short threshold) {
 	}
 }
 
-void sobel_complete( unsigned char *source )
+void sobel_complete( unsigned char *source, short threshold)
 {
    short result = 0;
-   int x,y;
+   int x,y,arrayindex;
+   short sum,value;
    for (y = 1 ; y < (sobel_height-1) ; y++) {
 	 for (x = 1 ; x < (sobel_width-1) ; x++) {
-	   // replace sobel_x with in-line sobel_mac
+	   arrayindex = (y*sobel_width)+x;
+
+	   // sobel_x in-lining
 	   result += pgx_array[0] * source[(y-1)*sobel_width+(x-1)];
 	   result += pgx_array[1] * source[(y-1)*sobel_width+x];
 	   result += pgx_array[2] * source[(y-1)*sobel_width+(x+1)];
@@ -157,11 +160,10 @@ void sobel_complete( unsigned char *source )
 	   result += pgx_array[6] * source[(y+1)*sobel_width+(x-1)];
 	   result += pgx_array[7] * source[(y+1)*sobel_width+x];
 	   result += pgx_array[8] * source[(y+1)*sobel_width+(x+1)];
-	   sobel_x_result[y*sobel_width+x] = result; 	//sobel_mac(source,x,y,gx_array,sobel_width);
-
+	   sobel_x_result[arrayindex] = result;
 	   result = 0;
 
-	   // replace sobel_y with in-line sobel_mac
+	   // sobel_y in-lining
 	   result += pgy_array[0] * source[(y-1)*sobel_width+(x-1)];
 	   result += pgy_array[1] * source[(y-1)*sobel_width+x];
 	   result += pgy_array[2] * source[(y-1)*sobel_width+(x+1)];
@@ -171,9 +173,17 @@ void sobel_complete( unsigned char *source )
 	   result += pgy_array[6] * source[(y+1)*sobel_width+(x-1)];
 	   result += pgy_array[7] * source[(y+1)*sobel_width+x];
 	   result += pgy_array[8] * source[(y+1)*sobel_width+(x+1)];
-	   sobel_y_result[y*sobel_width+x] = result; 	//sobel_mac(source,x,y,gy_array,sobel_width);
+	   sobel_y_result[arrayindex] = result;
+	   result = 0;
+
+	   // sobel_threshold in-lining
+	   value = sobel_x_result[arrayindex];
+	   sum = (value < 0) ? -value : value;
+	   value = sobel_y_result[arrayindex];
+	   sum += (value < 0) ? -value : value;
+	   sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
 	 }
-   } // end sobel_x in-lining
+   }
 }
 
 unsigned short *GetSobel_rgb() {
