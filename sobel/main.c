@@ -192,9 +192,9 @@ int main()
 		      }
 		      //print differences
 		      printf("-- CYCLE TIME OF FUNCTIONS --\n");
-		      printf("[sobel_x]   : dC = %d\n",end_sobel_x-start_sobel_x);
-		      printf("[sobel_y]   : dC = %d\n",end_sobel_y-start_sobel_y);
-		      printf("[sobel_th]  : dC = %d\n",end_sobel_th-start_sobel_th);
+		      printf("[sobel_tot] : dC = %d\n",end_sobel_x-start_sobel_x);
+//		      printf("[sobel_y]   : dC = %d\n",end_sobel_y-start_sobel_y);
+//		      printf("[sobel_th]  : dC = %d\n",end_sobel_th-start_sobel_th);
 		      printf("[grayscale] : dC = %d\n",end_grayscale-start_grayscale);
 
 		      //while(wait_cnt < max_wait) { wait_cnt++; }
