@@ -136,45 +136,14 @@ int main()
 
                        alt_timestamp_start();
                        start_sobel_x = alt_timestamp();
-                       /* sobel_x function in-lining <=> replace: sobel_x(grayscale);
-                       short result = 0;
-                       int x,y;
-                       for (y = 1 ; y < (sobel_height-1) ; y++) {
-                         for (x = 1 ; x < (sobel_width-1) ; x++) {
-                           result += pgx_array[0] * grayscale[(y-1)*sobel_width+(x-1)];
-                           result += pgx_array[1] * grayscale[(y-1)*sobel_width+x];
-                           result += pgx_array[2] * grayscale[(y-1)*sobel_width+(x+1)];
-                           result += pgx_array[3] * grayscale[y*sobel_width+(x-1)];
-                           result += pgx_array[4] * grayscale[y*sobel_width+x];
-                           result += pgx_array[5] * grayscale[y*sobel_width+(x+1)];
-                           result += pgx_array[6] * grayscale[(y+1)*sobel_width+(x-1)];
-                           result += pgx_array[7] * grayscale[(y+1)*sobel_width+x];
-                           result += pgx_array[8] * grayscale[(y+1)*sobel_width+(x+1)];
-                           sobel_x_result[y*sobel_width+x] = result; 	//sobel_mac(source,x,y,gx_array,sobel_width);
-                         }
-                       } // end sobel_x in-lining*/
+//                       sobel_x(grayscale);
                        sobel_complete(grayscale, 128);
                        end_sobel_x = alt_timestamp();
 
-                       /*alt_timestamp_start();
-                       start_sobel_y = alt_timestamp();
-                       /* sobel_y function in-lining <=> replace: sobel_y(grayscale);
-                       result = 0;
-                       for (y = 1 ; y < (sobel_height-1) ; y++) {
-                         for (x = 1 ; x < (sobel_width-1) ; x++) {
-                           result += pgy_array[0] * grayscale[(y-1)*sobel_width+(x-1)];
-                           result += pgy_array[1] * grayscale[(y-1)*sobel_width+x];
-                           result += pgy_array[2] * grayscale[(y-1)*sobel_width+(x+1)];
-                           result += pgy_array[3] * grayscale[y*sobel_width+(x-1)];
-                           result += pgy_array[4] * grayscale[y*sobel_width+x];
-                           result += pgy_array[5] * grayscale[y*sobel_width+(x+1)];
-                           result += pgy_array[6] * grayscale[(y+1)*sobel_width+(x-1)];
-                           result += pgy_array[7] * grayscale[(y+1)*sobel_width+x];
-                           result += pgy_array[8] * grayscale[(y+1)*sobel_width+(x+1)];
-                           sobel_y_result[y*sobel_width+x] = result; 	//sobel_mac(source,x,y,gy_array,sobel_width);
-                         }
-                       } // end sobel_y in-lining
-                       end_sobel_y = alt_timestamp();*/
+//                       alt_timestamp_start();
+//                       start_sobel_y = alt_timestamp();
+//                       sobel_y(grayscale);
+//                       end_sobel_y = alt_timestamp();
 
 //                       alt_timestamp_start();
 //                       start_sobel_th = alt_timestamp();
@@ -193,6 +162,7 @@ int main()
 		      //print differences
 		      printf("-- CYCLE TIME OF FUNCTIONS --\n");
 		      printf("[sobel_tot] : dC = %d\n",end_sobel_x-start_sobel_x);
+//		      printf("[sobel_x]   : dC = %d\n",end_sobel_x-start_sobel_x);
 //		      printf("[sobel_y]   : dC = %d\n",end_sobel_y-start_sobel_y);
 //		      printf("[sobel_th]  : dC = %d\n",end_sobel_th-start_sobel_th);
 		      printf("[grayscale] : dC = %d\n",end_grayscale-start_grayscale);
