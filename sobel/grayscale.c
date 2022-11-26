@@ -29,7 +29,7 @@ void conv_grayscale(void *picture,
 			gray = (((rgb>>11)&0x1F)<<3)*21; // red part
 			gray += (((rgb>>5)&0x3F)<<2)*72; // green part
 			gray += (((rgb>>0)&0x1F)<<3)*7; // blue part
-			gray /= 100;
+			gray *= 0.01;
 			IOWR_8DIRECT(grayscale_array,y*width+x,gray);
 		}
 	}
