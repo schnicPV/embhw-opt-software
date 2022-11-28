@@ -17,8 +17,8 @@ const char gy_array[3][3] = { {1, 2, 1},
                    {0, 0, 0},
                    {-1,-2,-1}};
 
-const char * pgx_array = &gx_array;
-const char * pgy_array = &gy_array;
+const char * pgx_array = &(gx_array);
+const char * pgy_array = &(gy_array);
 
 void init_sobel_arrays(int width , int height) {
 	int loop;
@@ -74,10 +74,21 @@ short sobel_mac( unsigned char *pixels,
 
 void sobel_x( unsigned char *source ) {
    int x,y;
+//   short result = 0;
 
    for (y = 1 ; y < (sobel_height-1) ; y++) {
       for (x = 1 ; x < (sobel_width-1) ; x++) {
          sobel_x_result[y*sobel_width+x] = sobel_mac(source,x,y,gx_array,sobel_width);
+//    	  result += pgx_array[0] * source[(y-1)*sobel_width+(x-1)];
+//		  result += pgx_array[1] * source[(y-1)*sobel_width+x];
+//		  result += pgx_array[2] * source[(y-1)*sobel_width+(x+1)];
+//		  result += pgx_array[3] * source[y*sobel_width+(x-1)];
+//		  result += pgx_array[4] * source[y*sobel_width+x];
+//		  result += pgx_array[5] * source[y*sobel_width+(x+1)];
+//		  result += pgx_array[6] * source[(y+1)*sobel_width+(x-1)];
+//		  result += pgx_array[7] * source[(y+1)*sobel_width+x];
+//		  result += pgx_array[8] * source[(y+1)*sobel_width+(x+1)];
+//		  sobel_x_result[(y*sobel_width)+x] = result;
       }
    }
 }
@@ -101,10 +112,21 @@ void sobel_x_with_rgb( unsigned char *source ) {
 
 void sobel_y( unsigned char *source ) {
    int x,y;
+//   short result = 0;
 
    for (y = 1 ; y < (sobel_height-1) ; y++) {
       for (x = 1 ; x < (sobel_width-1) ; x++) {
          sobel_y_result[y*sobel_width+x] = sobel_mac(source,x,y,gy_array,sobel_width);
+//    	  result += pgy_array[0] * source[(y-1)*sobel_width+(x-1)];
+//		  result += pgy_array[1] * source[(y-1)*sobel_width+x];
+//		  result += pgy_array[2] * source[(y-1)*sobel_width+(x+1)];
+//		  result += pgy_array[3] * source[y*sobel_width+(x-1)];
+//		  result += pgy_array[4] * source[y*sobel_width+x];
+//		  result += pgy_array[5] * source[y*sobel_width+(x+1)];
+//		  result += pgy_array[6] * source[(y+1)*sobel_width+(x-1)];
+//		  result += pgy_array[7] * source[(y+1)*sobel_width+x];
+//		  result += pgy_array[8] * source[(y+1)*sobel_width+(x+1)];
+//		  sobel_y_result[(y*sobel_width)+x] = result;
       }
    }
 }
@@ -127,25 +149,26 @@ void sobel_y_with_rgb( unsigned char *source ) {
 }
 
 void sobel_threshold(short threshold) {
-	int x,y,arrayindex;
 	short sum,value;
-	for (y = 1 ; y < (sobel_height-1) ; y++) {
-		for (x = 1 ; x < (sobel_width-1) ; x++) {
-			arrayindex = (y*sobel_width)+x;
-			value = sobel_x_result[arrayindex];
-			sum = (value < 0) ? -value : value;
-			value = sobel_y_result[arrayindex];
-			sum += (value < 0) ? -value : value;
-			sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
-		}
+	int k;
+	int kmax = sobel_height*sobel_width;
+	for(k = 1; k<kmax; k++)
+	{
+		value = sobel_x_result[k];
+//		sum = (value < 0) ? -value : value;
+		sum = (value + (value >> 31)) ^ (value >> 31);		// get absolute value (2 complement)
+		value = sobel_y_result[k];
+//		sum += (value < 0) ? -value : value;
+		sum += (value + (value >> 31)) ^ (value >> 31);		// get absolute value (2 complement)
+		sobel_result[k] = (sum > threshold) ? 0xFF : 0;
 	}
 }
 
-void sobel_complete( unsigned char *source, short threshold)
+void sobel_complete( unsigned char *source)//, short threshold)
 {
    short result = 0;
    int x,y,arrayindex;
-   short sum,value;
+//   short sum,value;
    for (y = 1 ; y < (sobel_height-1) ; y++) {
 	 for (x = 1 ; x < (sobel_width-1) ; x++) {
 	   arrayindex = (y*sobel_width)+x;
@@ -176,12 +199,12 @@ void sobel_complete( unsigned char *source, short threshold)
 	   sobel_y_result[arrayindex] = result;
 	   result = 0;
 
-	   // sobel_threshold in-lining
-	   value = sobel_x_result[arrayindex];
-	   sum = (value < 0) ? -value : value;
-	   value = sobel_y_result[arrayindex];
-	   sum += (value < 0) ? -value : value;
-	   sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
+//	   // sobel_threshold in-lining
+//	   value = sobel_x_result[arrayindex];
+//	   sum = (value < 0) ? -value : value;
+//	   value = sobel_y_result[arrayindex];
+//	   sum += (value < 0) ? -value : value;
+//	   sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
 	 }
    }
 }
