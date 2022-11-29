@@ -165,11 +165,11 @@ void sobel_threshold(short threshold) {
 	}
 }
 
-void sobel_complete( unsigned char *source)//, short threshold)
+void sobel_complete( unsigned char *source, short threshold)
 {
    short result = 0;
    int x,y,arrayindex;
-//   short sum,value;
+   short sum,value;
    for (y = 1 ; y < (sobel_height-1) ; y++) {
 	 for (x = 1 ; x < (sobel_width-1) ; x++) {
 	   arrayindex = (y*sobel_width)+x;
@@ -200,12 +200,12 @@ void sobel_complete( unsigned char *source)//, short threshold)
 	   sobel_y_result[arrayindex] = result;
 	   result = 0;
 
-//	   // sobel_threshold in-lining
-//	   value = sobel_x_result[arrayindex];
-//	   sum = (value < 0) ? -value : value;
-//	   value = sobel_y_result[arrayindex];
-//	   sum += (value < 0) ? -value : value;
-//	   sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
+	   // sobel_threshold in-lining
+	   value = sobel_x_result[arrayindex];
+	   sum = (value + (value >> 31)) ^ (value >> 31);		// get absolute value (2 complement)
+	   value = sobel_y_result[arrayindex];
+	   sum += (value + (value >> 31)) ^ (value >> 31);		// get absolute value (2 complement)
+	   sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
 	 }
    }
 }
