@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "io.h"
 #include "sobel.h"
+#include <sys/alt_cache.h>
 
 const char gx_array[3][3] = {{-1,0,1},
                   {-2,0,2},
@@ -31,8 +32,8 @@ void init_sobel_arrays(int width , int height) {
 		free(sobel_y_result);
 	sobel_y_result = (short *)malloc(width*height*sizeof(short));
 	if (sobel_result != NULL)
-		free(sobel_result);
-	sobel_result = (unsigned char *)malloc(width*height*sizeof(unsigned char));
+		alt_uncached_free(sobel_result);
+	sobel_result = (unsigned char *)alt_uncached_malloc(width*height*sizeof(unsigned char));
 	if (sobel_rgb565 != NULL)
 		free(sobel_rgb565);
 	sobel_rgb565 = (unsigned short *)malloc(width*height*sizeof(unsigned short));

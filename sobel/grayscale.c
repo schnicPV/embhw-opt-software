@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <io.h>
 #include <system.h>
+#include <sys/alt_cache.h>
 
 unsigned char *grayscale_array;
 int grayscale_width = 0;
