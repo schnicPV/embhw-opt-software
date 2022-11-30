@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "io.h"
 #include "sobel.h"
+#include <sys/alt_cache.h>
 
 const char gx_array[3][3] = {{-1,0,1},
                   {-2,0,2},
@@ -31,8 +32,8 @@ void init_sobel_arrays(int width , int height) {
 		free(sobel_y_result);
 	sobel_y_result = (short *)malloc(width*height*sizeof(short));
 	if (sobel_result != NULL)
-		free(sobel_result);
-	sobel_result = (unsigned char *)malloc(width*height*sizeof(unsigned char));
+		alt_uncached_free(sobel_result);
+	sobel_result = (unsigned char *)alt_uncached_malloc(width*height*sizeof(unsigned char));
 	if (sobel_rgb565 != NULL)
 		free(sobel_rgb565);
 	sobel_rgb565 = (unsigned short *)malloc(width*height*sizeof(unsigned short));
@@ -167,41 +168,34 @@ void sobel_threshold(short threshold) {
 void sobel_complete( unsigned char *source, short threshold)
 {
    short result = 0;
-//   short sum,value;
    int k;
    int kmax = sobel_height*sobel_width;
    for(k = 1; k<kmax; k++)
    {
      // sobel_x in-lining
      result -= source[k-sobel_width-1];
-//     result += (char) (0) * source[k-sobel_width];	// <=> result += 0; => omit this line
+     // omitted line due to result += 0;
      result += source[k-sobel_width+1];
-     result -= (source[k-1]<<1);						// x<<1 <=> x*=2
-//     result += (char) (0) * source[k];				// <=> result += 0; => omit this line
-     result += (source[k+1]<<1);						// x<<1 <=> x*=2
+     result -= (source[k-1]<<1);			// x<<1 <=> x*=2
+     // omitted line due to result += 0;
+     result += (source[k+1]<<1);			// x<<1 <=> x*=2
      result -= source[k+sobel_width-1];
-//     result += (char) (0) * source[k+sobel_width];	// <=> result += 0; => omit this line
+     // omitted line due to result += 0;
      result += source[k+sobel_width+1];
      sobel_x_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
      result = 0;
 
      // sobel_y in-lining
      result += source[k-sobel_width-1];
-     result += (source[k-sobel_width]<<1);				// x<<1 <=> x*=2
+     result += (source[k-sobel_width]<<1);	// x<<1 <=> x*=2
      result += source[k-sobel_width+1];
-//     result += (char) (0) * source[k-1];				// <=> result += 0; => omit this line
-//     result += (char) (0) * source[k];				// <=> result += 0; => omit this line
-//     result += (char) (0) * source[k+1];				// <=> result += 0; => omit this line
+     // omitted line due to result += 0;
      result -= source[k+sobel_width-1];
-     result -= (source[k+sobel_width]<<1);				// x<<1 <=> x*=2
+     result -= (source[k+sobel_width]<<1);	// x<<1 <=> x*=2
      result -= source[k+sobel_width+1];
      sobel_y_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
 
      // sobel_threshold in-lining
-//     value = sobel_x_result[k];
-//     sum = (value + (value >> 31)) ^ (value >> 31);   // get absolute value (2 complement)
-//     value = sobel_y_result[k];
-//     sum += (value + (value >> 31)) ^ (value >> 31);    // get absolute value (2 complement)
      sobel_result[k] = ((sobel_x_result[k]+sobel_y_result[k]) > threshold) ? 0xFF : 0;
    }
 }
