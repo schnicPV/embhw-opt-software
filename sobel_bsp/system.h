@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_gen2_0' in SOPC Builder design 'base_system'
  * SOPC Builder design path: C:/Users/nicis/HESSO/MSc_ElE/TSM_EmbHardw/Labs/Lab_04/mse_demo/quartus_project/base_system.sopcinfo
  *
- * Generated: Wed Nov 09 16:46:18 CET 2022
+ * Generated: Wed Nov 30 17:03:37 CET 2022
  */
 
 /*
@@ -401,7 +401,7 @@
 #define SYSID_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SYSID_NAME "/dev/sysid"
 #define SYSID_SPAN 8
-#define SYSID_TIMESTAMP 1668008059
+#define SYSID_TIMESTAMP 1669823978
 #define SYSID_TYPE "altera_avalon_sysid_qsys"
 
 

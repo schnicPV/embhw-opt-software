@@ -164,48 +164,45 @@ void sobel_threshold(short threshold) {
 	}
 }
 
-void sobel_complete( unsigned char *source)//, short threshold)
+void sobel_complete( unsigned char *source, short threshold)
 {
    short result = 0;
-   int x,y,arrayindex;
 //   short sum,value;
-   for (y = 1 ; y < (sobel_height-1) ; y++) {
-	 for (x = 1 ; x < (sobel_width-1) ; x++) {
-	   arrayindex = (y*sobel_width)+x;
+   int k;
+   int kmax = sobel_height*sobel_width;
+   for(k = 1; k<kmax; k++)
+   {
+     // sobel_x in-lining
+     result -= source[k-sobel_width-1];
+//     result += (char) (0) * source[k-sobel_width];	// <=> result += 0; => omit this line
+     result += source[k-sobel_width+1];
+     result -= (source[k-1]<<1);						// x<<1 <=> x*=2
+//     result += (char) (0) * source[k];				// <=> result += 0; => omit this line
+     result += (source[k+1]<<1);						// x<<1 <=> x*=2
+     result -= source[k+sobel_width-1];
+//     result += (char) (0) * source[k+sobel_width];	// <=> result += 0; => omit this line
+     result += source[k+sobel_width+1];
+     sobel_x_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
+     result = 0;
 
-	   // sobel_x in-lining
-	   result += pgx_array[0] * source[(y-1)*sobel_width+(x-1)];
-	   result += pgx_array[1] * source[(y-1)*sobel_width+x];
-	   result += pgx_array[2] * source[(y-1)*sobel_width+(x+1)];
-	   result += pgx_array[3] * source[y*sobel_width+(x-1)];
-	   result += pgx_array[4] * source[y*sobel_width+x];
-	   result += pgx_array[5] * source[y*sobel_width+(x+1)];
-	   result += pgx_array[6] * source[(y+1)*sobel_width+(x-1)];
-	   result += pgx_array[7] * source[(y+1)*sobel_width+x];
-	   result += pgx_array[8] * source[(y+1)*sobel_width+(x+1)];
-	   sobel_x_result[arrayindex] = result;
-	   result = 0;
+     // sobel_y in-lining
+     result += source[k-sobel_width-1];
+     result += (source[k-sobel_width]<<1);				// x<<1 <=> x*=2
+     result += source[k-sobel_width+1];
+//     result += (char) (0) * source[k-1];				// <=> result += 0; => omit this line
+//     result += (char) (0) * source[k];				// <=> result += 0; => omit this line
+//     result += (char) (0) * source[k+1];				// <=> result += 0; => omit this line
+     result -= source[k+sobel_width-1];
+     result -= (source[k+sobel_width]<<1);				// x<<1 <=> x*=2
+     result -= source[k+sobel_width+1];
+     sobel_y_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
 
-	   // sobel_y in-lining
-	   result += pgy_array[0] * source[(y-1)*sobel_width+(x-1)];
-	   result += pgy_array[1] * source[(y-1)*sobel_width+x];
-	   result += pgy_array[2] * source[(y-1)*sobel_width+(x+1)];
-	   result += pgy_array[3] * source[y*sobel_width+(x-1)];
-	   result += pgy_array[4] * source[y*sobel_width+x];
-	   result += pgy_array[5] * source[y*sobel_width+(x+1)];
-	   result += pgy_array[6] * source[(y+1)*sobel_width+(x-1)];
-	   result += pgy_array[7] * source[(y+1)*sobel_width+x];
-	   result += pgy_array[8] * source[(y+1)*sobel_width+(x+1)];
-	   sobel_y_result[arrayindex] = result;
-	   result = 0;
-
-//	   // sobel_threshold in-lining
-//	   value = sobel_x_result[arrayindex];
-//	   sum = (value < 0) ? -value : value;
-//	   value = sobel_y_result[arrayindex];
-//	   sum += (value < 0) ? -value : value;
-//	   sobel_result[arrayindex] = (sum > threshold) ? 0xFF : 0;
-	 }
+     // sobel_threshold in-lining
+//     value = sobel_x_result[k];
+//     sum = (value + (value >> 31)) ^ (value >> 31);   // get absolute value (2 complement)
+//     value = sobel_y_result[k];
+//     sum += (value + (value >> 31)) ^ (value >> 31);    // get absolute value (2 complement)
+     sobel_result[k] = ((sobel_x_result[k]+sobel_y_result[k]) > threshold) ? 0xFF : 0;
    }
 }
 
