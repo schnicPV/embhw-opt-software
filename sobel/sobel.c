@@ -184,7 +184,9 @@ void sobel_complete( unsigned char *source, short threshold)
      result += source[k+sobel_width+1];
      sobel_x_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
      result = 0;
-
+   }
+   for(k = 1; k<kmax; k++)
+   {
      // sobel_y in-lining
      result += source[k-sobel_width-1];
      result += (source[k-sobel_width]<<1);	// x<<1 <=> x*=2
@@ -194,7 +196,10 @@ void sobel_complete( unsigned char *source, short threshold)
      result -= (source[k+sobel_width]<<1);	// x<<1 <=> x*=2
      result -= source[k+sobel_width+1];
      sobel_y_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
-
+     result = 0;
+   }
+   for(k = 1; k<kmax; k++)		// even if sobel_result doesn't use the cache, it is faster to create another loop here (because sobel x,y are using the cache)
+   {
      // sobel_threshold in-lining
      sobel_result[k] = ((sobel_x_result[k]+sobel_y_result[k]) > threshold) ? 0xFF : 0;
    }

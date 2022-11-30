@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_gen2_0' in SOPC Builder design 'base_system'
  * SOPC Builder design path: C:/Users/nicis/HESSO/MSc_ElE/TSM_EmbHardw/Labs/Lab_04/mse_demo/quartus_project/base_system.sopcinfo
  *
- * Generated: Wed Nov 30 22:08:48 CET 2022
+ * Generated: Wed Nov 30 22:35:53 CET 2022
  */
 
 /*
@@ -72,7 +72,7 @@
 #define ALT_CPU_DCACHE_BYPASS_MASK 0x80000000
 #define ALT_CPU_DCACHE_LINE_SIZE 32
 #define ALT_CPU_DCACHE_LINE_SIZE_LOG2 5
-#define ALT_CPU_DCACHE_SIZE 4096
+#define ALT_CPU_DCACHE_SIZE 8192
 #define ALT_CPU_EXCEPTION_ADDR 0x00000020
 #define ALT_CPU_FLASH_ACCELERATOR_LINES 0
 #define ALT_CPU_FLASH_ACCELERATOR_LINE_SIZE 0
@@ -113,7 +113,7 @@
 #define NIOS2_DCACHE_BYPASS_MASK 0x80000000
 #define NIOS2_DCACHE_LINE_SIZE 32
 #define NIOS2_DCACHE_LINE_SIZE_LOG2 5
-#define NIOS2_DCACHE_SIZE 4096
+#define NIOS2_DCACHE_SIZE 8192
 #define NIOS2_EXCEPTION_ADDR 0x00000020
 #define NIOS2_FLASH_ACCELERATOR_LINES 0
 #define NIOS2_FLASH_ACCELERATOR_LINE_SIZE 0
@@ -405,7 +405,7 @@
 #define SYSID_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SYSID_NAME "/dev/sysid"
 #define SYSID_SPAN 8
-#define SYSID_TIMESTAMP 1669842156
+#define SYSID_TIMESTAMP 1669843811
 #define SYSID_TYPE "altera_avalon_sysid_qsys"
 
 
