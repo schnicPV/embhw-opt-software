@@ -27,7 +27,7 @@ void conv_grayscale(void *picture,
   for(k = 0; k<kmax; k++)
   {
 	  rgb = pixels[k];
-	  gray = ((rgb>>11)<<1) + ((((rgb>>5)&0x3F)*40)>>4) + (rgb&0x1F); 	// R + G + B
+	  gray = ((rgb>>11)<<1) + ((((rgb>>5)&0x3F)*5)>>1) + (rgb&0x1F); 	// R + G + B
 	  IOWR_8DIRECT(grayscale_array,k,gray);
   }
 }

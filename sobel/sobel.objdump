@@ -45,39 +45,39 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  13 .debug_str    00003ea7  00000000  00000000  000565c8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_loc    0001c283  00000000  00000000  0005a46f  2**0
+ 14 .debug_loc    0001c27f  00000000  00000000  0005a46f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_alt_sim_info 00000060  00000000  00000000  000766f4  2**2
+ 15 .debug_alt_sim_info 00000060  00000000  00000000  000766f0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_ranges 00001c38  00000000  00000000  00076758  2**3
+ 16 .debug_ranges 00001c38  00000000  00000000  00076750  2**3
                   CONTENTS, READONLY, DEBUGGING
- 17 .thread_model 00000003  00000000  00000000  0007bdd2  2**0
+ 17 .thread_model 00000003  00000000  00000000  0007bdca  2**0
                   CONTENTS, READONLY
- 18 .cpu          0000000c  00000000  00000000  0007bdd5  2**0
+ 18 .cpu          0000000c  00000000  00000000  0007bdcd  2**0
                   CONTENTS, READONLY
- 19 .qsys         00000001  00000000  00000000  0007bde1  2**0
+ 19 .qsys         00000001  00000000  00000000  0007bdd9  2**0
                   CONTENTS, READONLY
- 20 .simulation_enabled 00000001  00000000  00000000  0007bde2  2**0
+ 20 .simulation_enabled 00000001  00000000  00000000  0007bdda  2**0
                   CONTENTS, READONLY
- 21 .sysid_hash   00000004  00000000  00000000  0007bde3  2**0
+ 21 .sysid_hash   00000004  00000000  00000000  0007bddb  2**0
                   CONTENTS, READONLY
- 22 .sysid_base   00000004  00000000  00000000  0007bde7  2**0
+ 22 .sysid_base   00000004  00000000  00000000  0007bddf  2**0
                   CONTENTS, READONLY
- 23 .sysid_time   00000004  00000000  00000000  0007bdeb  2**0
+ 23 .sysid_time   00000004  00000000  00000000  0007bde3  2**0
                   CONTENTS, READONLY
- 24 .stderr_dev   00000009  00000000  00000000  0007bdef  2**0
+ 24 .stderr_dev   00000009  00000000  00000000  0007bde7  2**0
                   CONTENTS, READONLY
- 25 .stdin_dev    00000009  00000000  00000000  0007bdf8  2**0
+ 25 .stdin_dev    00000009  00000000  00000000  0007bdf0  2**0
                   CONTENTS, READONLY
- 26 .stdout_dev   00000009  00000000  00000000  0007be01  2**0
+ 26 .stdout_dev   00000009  00000000  00000000  0007bdf9  2**0
                   CONTENTS, READONLY
- 27 .sopc_system_name 0000000b  00000000  00000000  0007be0a  2**0
+ 27 .sopc_system_name 0000000b  00000000  00000000  0007be02  2**0
                   CONTENTS, READONLY
- 28 .quartus_project_dir 0000004e  00000000  00000000  0007be15  2**0
+ 28 .quartus_project_dir 0000004e  00000000  00000000  0007be0d  2**0
                   CONTENTS, READONLY
- 29 .jdi          00005ad8  00000000  00000000  0007be63  2**0
+ 29 .jdi          00005ad8  00000000  00000000  0007be5b  2**0
                   CONTENTS, READONLY
- 30 .sopcinfo     00072641  00000000  00000000  0008193b  2**0
+ 30 .sopcinfo     00072641  00000000  00000000  00081933  2**0
                   CONTENTS, READONLY
 SYMBOL TABLE:
 00000000 l    d  .entry	00000000 .entry
@@ -1729,7 +1729,7 @@ void conv_grayscale(void *picture,
   {
 	  rgb = pixels[k];
      70c:	2200000b 	ldhu	r8,0(r4)
-	  gray = ((rgb>>11)<<1) + ((((rgb>>5)&0x3F)*40)>>4) + (rgb&0x1F); 	// R + G + B
+	  gray = ((rgb>>11)<<1) + ((((rgb>>5)&0x3F)*5)>>1) + (rgb&0x1F); 	// R + G + B
 	  IOWR_8DIRECT(grayscale_array,k,gray);
      710:	1245883a 	add	r2,r2,r9
      714:	40ffffcc 	andi	r3,r8,65535
@@ -1737,9 +1737,9 @@ void conv_grayscale(void *picture,
      71c:	1806d2fa 	srli	r3,r3,11
      720:	420007cc 	andi	r8,r8,31
      724:	39c00fcc 	andi	r7,r7,63
-     728:	39c00a24 	muli	r7,r7,40
+     728:	39c00164 	muli	r7,r7,5
      72c:	18c7883a 	add	r3,r3,r3
-     730:	380fd13a 	srai	r7,r7,4
+     730:	380fd07a 	srai	r7,r7,1
      734:	38c7883a 	add	r3,r7,r3
      738:	1a07883a 	add	r3,r3,r8
      73c:	10c00025 	stbio	r3,0(r2)
@@ -1754,7 +1754,7 @@ void conv_grayscale(void *picture,
      748:	8a7fef1e 	bne	r17,r9,708 <__alt_data_end+0xff000708>
   {
 	  rgb = pixels[k];
-	  gray = ((rgb>>11)<<1) + ((((rgb>>5)&0x3F)*40)>>4) + (rgb&0x1F); 	// R + G + B
+	  gray = ((rgb>>11)<<1) + ((((rgb>>5)&0x3F)*5)>>1) + (rgb&0x1F); 	// R + G + B
 	  IOWR_8DIRECT(grayscale_array,k,gray);
   }
 }
