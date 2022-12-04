@@ -925,7 +925,7 @@ Disassembly of section .text:
     movhi r2, %hi(NIOS2_DCACHE_SIZE)
 #else
     movui r2, NIOS2_DCACHE_SIZE
-     18c:	00900014 	movui	r2,16384
+     18c:	00a00014 	movui	r2,32768
 #endif
 
 0:
@@ -20832,7 +20832,7 @@ void alt_dcache_flush_all (void)
   
   for (i = (char*) 0; i < (char*) NIOS2_DCACHE_SIZE; i+= NIOS2_DCACHE_LINE_SIZE)
     f434:	0005883a 	mov	r2,zero
-    f438:	00d00004 	movi	r3,16384
+    f438:	00e00014 	movui	r3,32768
   { 
     __asm__ volatile ("flushd (%0)" :: "r" (i));
     f43c:	1000003b 	flushd	0(r2)
