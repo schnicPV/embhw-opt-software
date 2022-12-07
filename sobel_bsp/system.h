@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_gen2_0' in SOPC Builder design 'base_system'
  * SOPC Builder design path: C:/Users/nicis/HESSO/MSc_ElE/TSM_EmbHardw/Labs/Lab_04/mse_demo/quartus_project/base_system.sopcinfo
  *
- * Generated: Sun Dec 04 10:01:02 CET 2022
+ * Generated: Wed Dec 07 16:32:35 CET 2022
  */
 
 /*
@@ -72,7 +72,7 @@
 #define ALT_CPU_DCACHE_BYPASS_MASK 0x80000000
 #define ALT_CPU_DCACHE_LINE_SIZE 32
 #define ALT_CPU_DCACHE_LINE_SIZE_LOG2 5
-#define ALT_CPU_DCACHE_SIZE 32768
+#define ALT_CPU_DCACHE_SIZE 16384
 #define ALT_CPU_EXCEPTION_ADDR 0x00000020
 #define ALT_CPU_FLASH_ACCELERATOR_LINES 0
 #define ALT_CPU_FLASH_ACCELERATOR_LINE_SIZE 0
@@ -113,7 +113,7 @@
 #define NIOS2_DCACHE_BYPASS_MASK 0x80000000
 #define NIOS2_DCACHE_LINE_SIZE 32
 #define NIOS2_DCACHE_LINE_SIZE_LOG2 5
-#define NIOS2_DCACHE_SIZE 32768
+#define NIOS2_DCACHE_SIZE 16384
 #define NIOS2_EXCEPTION_ADDR 0x00000020
 #define NIOS2_FLASH_ACCELERATOR_LINES 0
 #define NIOS2_FLASH_ACCELERATOR_LINE_SIZE 0
@@ -137,6 +137,17 @@
 
 
 /*
+ * Custom instruction macros
+ *
+ */
+
+#define ALT_CI_CUSTOM_GRAY_0(A,B) __builtin_custom_inii(ALT_CI_CUSTOM_GRAY_0_N,(A),(B))
+#define ALT_CI_CUSTOM_GRAY_0_N 0x0
+#define ALT_CI_CUSTOM_SOBEL_0(A,B) __builtin_custom_inii(ALT_CI_CUSTOM_SOBEL_0_N,(A),(B))
+#define ALT_CI_CUSTOM_SOBEL_0_N 0x1
+
+
+/*
  * Define for each module class mastered by the CPU
  *
  */
@@ -149,6 +160,8 @@
 #define __ALTERA_NIOS2_GEN2
 #define __ALTPLL
 #define __CAM_DMA
+#define __CUSTOM_GRAY
+#define __CUSTOM_SOBEL
 #define __I2C_MASTER
 #define __LCD_DMA
 #define __VGA_DMA
@@ -405,7 +418,7 @@
 #define SYSID_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SYSID_NAME "/dev/sysid"
 #define SYSID_SPAN 8
-#define SYSID_TIMESTAMP 1670144109
+#define SYSID_TIMESTAMP 1670426839
 #define SYSID_TYPE "altera_avalon_sysid_qsys"
 
 

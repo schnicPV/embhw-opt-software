@@ -17,8 +17,8 @@ void conv_grayscale(void *picture,
                 int width,
                 int height) {
   int k,gray;
-  int kmax = width*height;
-  unsigned short *pixels = (unsigned short *)picture , rgb;
+  int kmax = (width*height)>>2;	// x>>2 <=> x/4
+  unsigned int *pixels = (unsigned int *)picture;// , rgb;
   grayscale_width = width;
   grayscape_height = height;
   if (grayscale_array != NULL)
@@ -26,9 +26,8 @@ void conv_grayscale(void *picture,
   grayscale_array = (unsigned char *) malloc(kmax);
   for(k = 0; k<kmax; k++)
   {
-	  rgb = pixels[k];
-	  gray = ((rgb>>11)<<1) + ((((rgb>>5)&0x3F)*5)>>1) + (rgb&0x1F); 	// R + G + B
-	  IOWR_8DIRECT(grayscale_array,k,gray);
+	  gray = ALT_CI_CUSTOM_GRAY_0(pixels[k*2], pixels[k*2+1]);
+	  IOWR_32DIRECT(grayscale_array, k*4, gray);
   }
 }
 
