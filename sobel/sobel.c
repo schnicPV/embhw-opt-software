@@ -10,6 +10,7 @@
 #include "io.h"
 #include "sobel.h"
 #include <sys/alt_cache.h>
+#include <system.h>
 
 const char gx_array[3][3] = {{-1,0,1},
                   {-2,0,2},
@@ -168,40 +169,47 @@ void sobel_threshold(short threshold) {
 void sobel_complete( unsigned char *source, short threshold)
 {
    short result = 0;
-   int k;
-   int kmax = sobel_height*sobel_width;
+   unsigned int k, a, b;
+   unsigned int kmax = sobel_height*sobel_width;
    for(k = 1; k<kmax; k++)
    {
+     /*
      // sobel_x in-lining
-     result -= source[k-sobel_width-1];
-     // omitted line due to result += 0;
-     result += source[k-sobel_width+1];
-     result -= (source[k-1]<<1);			// x<<1 <=> x*=2
-     // omitted line due to result += 0;
-     result += (source[k+1]<<1);			// x<<1 <=> x*=2
-     result -= source[k+sobel_width-1];
-     // omitted line due to result += 0;
-     result += source[k+sobel_width+1];
+     result -= source[k-sobel_width-1];		// ( y-1 | x-1 )
+     // omitted line due to result += 0;	// ( y-1 | x   )
+     result += source[k-sobel_width+1];		// ( y-1 | x+1 )
+     result -= (source[k-1]<<1);			// ( y   | x-1 )
+     // omitted line due to result += 0;	// ( y   | x   )
+     result += (source[k+1]<<1);			// ( y   | x+1 )
+     result -= source[k+sobel_width-1];		// ( y+1 | x-1 )
+     // omitted line due to result += 0;	// ( y+1 | x   )
+     result += source[k+sobel_width+1];		// ( y+1 | x+1 )
      sobel_x_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
      result = 0;
-   }
-   for(k = 1; k<kmax; k++)
-   {
+
      // sobel_y in-lining
-     result += source[k-sobel_width-1];
-     result += (source[k-sobel_width]<<1);	// x<<1 <=> x*=2
-     result += source[k-sobel_width+1];
-     // omitted line due to result += 0;
-     result -= source[k+sobel_width-1];
-     result -= (source[k+sobel_width]<<1);	// x<<1 <=> x*=2
-     result -= source[k+sobel_width+1];
+     result += source[k-sobel_width-1];		// ( y-1 | x-1 )
+     result += (source[k-sobel_width]<<1);	// ( y-1 | x   )
+     result += source[k-sobel_width+1];		// ( y-1 | x+1 )
+     // omitted line due to result += 0;	// ( y   | x-1 )
+     // omitted line due to result += 0;	// ( y   | x   )
+     // omitted line due to result += 0;	// ( y   | x+1 )
+     result -= source[k+sobel_width-1];		// ( y+1 | x-1 )
+     result -= (source[k+sobel_width]<<1);	// ( y+1 | x   )
+     result -= source[k+sobel_width+1];		// ( y+1 | x+1 )
      sobel_y_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
      result = 0;
-   }
-   for(k = 1; k<kmax; k++)		// even if sobel_result doesn't use the cache, it is faster to create another loop here (because sobel x,y are using the cache)
-   {
+
      // sobel_threshold in-lining
      sobel_result[k] = ((sobel_x_result[k]+sobel_y_result[k]) > threshold) ? 0xFF : 0;
+     */
+
+     // prepare 2 x 32 bit numbers which contain all pixels
+     a = (source[k-sobel_width-1]<<24) + (source[k-sobel_width]<<16) + (source[k-sobel_width+1]<<8) + (source[k-1]);
+     b = (source[k+1]<<24) + (source[k+sobel_width-1]<<16) + (source[k+sobel_width]<<8) + (source[k+sobel_width+1]);
+
+     // custom instruction
+     sobel_result[k] = (unsigned short) ALT_CI_CUSTOM_SOBEL_0(a, b);
    }
 }
 
