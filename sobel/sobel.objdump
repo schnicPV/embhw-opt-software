@@ -35,49 +35,49 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   8 .debug_aranges 000010d8  00000000  00000000  00013418  2**3
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_info   00028960  00000000  00000000  000144f0  2**0
+  9 .debug_info   00028930  00000000  00000000  000144f0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_abbrev 0000a802  00000000  00000000  0003ce50  2**0
+ 10 .debug_abbrev 0000a7df  00000000  00000000  0003ce20  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_line   0000cca2  00000000  00000000  00047652  2**0
+ 11 .debug_line   0000ccfc  00000000  00000000  000475ff  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_frame  000022ac  00000000  00000000  000542f4  2**2
+ 12 .debug_frame  000022a8  00000000  00000000  000542fc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_str    00003ea7  00000000  00000000  000565a0  2**0
+ 13 .debug_str    00003ea7  00000000  00000000  000565a4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_loc    0001c180  00000000  00000000  0005a447  2**0
+ 14 .debug_loc    0001c17e  00000000  00000000  0005a44b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_alt_sim_info 00000060  00000000  00000000  000765c8  2**2
+ 15 .debug_alt_sim_info 00000060  00000000  00000000  000765cc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_ranges 00001c38  00000000  00000000  00076628  2**3
+ 16 .debug_ranges 00001c38  00000000  00000000  00076630  2**3
                   CONTENTS, READONLY, DEBUGGING
- 17 .thread_model 00000003  00000000  00000000  0007bca2  2**0
+ 17 .thread_model 00000003  00000000  00000000  0007bcaa  2**0
                   CONTENTS, READONLY
- 18 .cpu          0000000c  00000000  00000000  0007bca5  2**0
+ 18 .cpu          0000000c  00000000  00000000  0007bcad  2**0
                   CONTENTS, READONLY
- 19 .qsys         00000001  00000000  00000000  0007bcb1  2**0
+ 19 .qsys         00000001  00000000  00000000  0007bcb9  2**0
                   CONTENTS, READONLY
- 20 .simulation_enabled 00000001  00000000  00000000  0007bcb2  2**0
+ 20 .simulation_enabled 00000001  00000000  00000000  0007bcba  2**0
                   CONTENTS, READONLY
- 21 .sysid_hash   00000004  00000000  00000000  0007bcb3  2**0
+ 21 .sysid_hash   00000004  00000000  00000000  0007bcbb  2**0
                   CONTENTS, READONLY
- 22 .sysid_base   00000004  00000000  00000000  0007bcb7  2**0
+ 22 .sysid_base   00000004  00000000  00000000  0007bcbf  2**0
                   CONTENTS, READONLY
- 23 .sysid_time   00000004  00000000  00000000  0007bcbb  2**0
+ 23 .sysid_time   00000004  00000000  00000000  0007bcc3  2**0
                   CONTENTS, READONLY
- 24 .stderr_dev   00000009  00000000  00000000  0007bcbf  2**0
+ 24 .stderr_dev   00000009  00000000  00000000  0007bcc7  2**0
                   CONTENTS, READONLY
- 25 .stdin_dev    00000009  00000000  00000000  0007bcc8  2**0
+ 25 .stdin_dev    00000009  00000000  00000000  0007bcd0  2**0
                   CONTENTS, READONLY
- 26 .stdout_dev   00000009  00000000  00000000  0007bcd1  2**0
+ 26 .stdout_dev   00000009  00000000  00000000  0007bcd9  2**0
                   CONTENTS, READONLY
- 27 .sopc_system_name 0000000b  00000000  00000000  0007bcda  2**0
+ 27 .sopc_system_name 0000000b  00000000  00000000  0007bce2  2**0
                   CONTENTS, READONLY
- 28 .quartus_project_dir 0000004e  00000000  00000000  0007bce5  2**0
+ 28 .quartus_project_dir 0000004e  00000000  00000000  0007bced  2**0
                   CONTENTS, READONLY
- 29 .jdi          00005ad8  00000000  00000000  0007bd33  2**0
+ 29 .jdi          00005ad8  00000000  00000000  0007bd3b  2**0
                   CONTENTS, READONLY
- 30 .sopcinfo     000786ea  00000000  00000000  0008180b  2**0
+ 30 .sopcinfo     000786ea  00000000  00000000  00081813  2**0
                   CONTENTS, READONLY
 SYMBOL TABLE:
 00000000 l    d  .entry	00000000 .entry
@@ -1674,68 +1674,63 @@ unsigned char DIPSW_get_value() {
      6b8:	f800283a 	ret
 
 000006bc <conv_grayscale>:
-int grayscale_width = 0;
-int grayscape_height = 0;
-
-void conv_grayscale(void *picture,
-                int width,
-                int height) {
-     6bc:	defffd04 	addi	sp,sp,-12
-     6c0:	dc400115 	stw	r17,4(sp)
-  int k,gray;
-  int kmax = (width*height)>>2;	// x>>2 <=> x/4
+  unsigned int k,gray;
+  unsigned int kmax = width*height;
   unsigned int *pixels = (unsigned int *)picture;// , rgb;
   grayscale_width = width;
   grayscape_height = height;
   if (grayscale_array != NULL)
-     6c4:	d0a6d117 	ldw	r2,-25788(gp)
-
-void conv_grayscale(void *picture,
-                int width,
-                int height) {
-  int k,gray;
-  int kmax = (width*height)>>2;	// x>>2 <=> x/4
-     6c8:	29a3383a 	mul	r17,r5,r6
+     6bc:	d0a6d117 	ldw	r2,-25788(gp)
 int grayscale_width = 0;
 int grayscape_height = 0;
 
 void conv_grayscale(void *picture,
                 int width,
                 int height) {
-     6cc:	dc000015 	stw	r16,0(sp)
-     6d0:	dfc00215 	stw	ra,8(sp)
-  int k,gray;
-  int kmax = (width*height)>>2;	// x>>2 <=> x/4
+     6c0:	defffd04 	addi	sp,sp,-12
+     6c4:	dc400115 	stw	r17,4(sp)
+     6c8:	dc000015 	stw	r16,0(sp)
+     6cc:	dfc00215 	stw	ra,8(sp)
+  unsigned int k,gray;
+  unsigned int kmax = width*height;
   unsigned int *pixels = (unsigned int *)picture;// , rgb;
   grayscale_width = width;
-     6d4:	d166d015 	stw	r5,-25792(gp)
+     6d0:	d166d015 	stw	r5,-25792(gp)
   grayscape_height = height;
-     6d8:	d1a6cf15 	stw	r6,-25796(gp)
+     6d4:	d1a6cf15 	stw	r6,-25796(gp)
 int grayscale_width = 0;
 int grayscape_height = 0;
 
 void conv_grayscale(void *picture,
                 int width,
                 int height) {
-     6dc:	2021883a 	mov	r16,r4
-  int k,gray;
-  int kmax = (width*height)>>2;	// x>>2 <=> x/4
-     6e0:	8823d0ba 	srai	r17,r17,2
+     6d8:	2021883a 	mov	r16,r4
+  unsigned int k,gray;
+  unsigned int kmax = width*height;
+     6dc:	29a3383a 	mul	r17,r5,r6
   unsigned int *pixels = (unsigned int *)picture;// , rgb;
   grayscale_width = width;
   grayscape_height = height;
   if (grayscale_array != NULL)
-     6e4:	10000226 	beq	r2,zero,6f0 <conv_grayscale+0x34>
-	  alt_uncached_free(grayscale_array);
-     6e8:	1009883a 	mov	r4,r2
-     6ec:	000ea740 	call	ea74 <alt_uncached_free>
-  grayscale_array = (unsigned char *) alt_uncached_malloc(kmax);
-     6f0:	8809883a 	mov	r4,r17
-     6f4:	000ea840 	call	ea84 <alt_uncached_malloc>
+     6e0:	10000226 	beq	r2,zero,6ec <conv_grayscale+0x30>
+    free(grayscale_array);
+     6e4:	1009883a 	mov	r4,r2
+     6e8:	0001c980 	call	1c98 <free>
+  grayscale_array = (unsigned char *) malloc(kmax);
+     6ec:	8809883a 	mov	r4,r17
+     6f0:	0001c840 	call	1c84 <malloc>
+  for(k = 0; k < (kmax>>2); k++)								// x>>2 <=> x/4
+     6f4:	880ed0ba 	srli	r7,r17,2
+  unsigned int *pixels = (unsigned int *)picture;// , rgb;
+  grayscale_width = width;
+  grayscape_height = height;
+  if (grayscale_array != NULL)
+    free(grayscale_array);
+  grayscale_array = (unsigned char *) malloc(kmax);
      6f8:	d0a6d115 	stw	r2,-25788(gp)
-  for(k = 0; k<kmax; k++)
-     6fc:	04400f0e 	bge	zero,r17,73c <conv_grayscale+0x80>
-     700:	8c4f883a 	add	r7,r17,r17
+  for(k = 0; k < (kmax>>2); k++)								// x>>2 <=> x/4
+     6fc:	38000f26 	beq	r7,zero,73c <conv_grayscale+0x80>
+     700:	39cf883a 	add	r7,r7,r7
      704:	8009883a 	mov	r4,r16
      708:	81800104 	addi	r6,r16,4
      70c:	39cf883a 	add	r7,r7,r7
@@ -1755,9 +1750,9 @@ void conv_grayscale(void *picture,
   grayscale_width = width;
   grayscape_height = height;
   if (grayscale_array != NULL)
-	  alt_uncached_free(grayscale_array);
-  grayscale_array = (unsigned char *) alt_uncached_malloc(kmax);
-  for(k = 0; k<kmax; k++)
+    free(grayscale_array);
+  grayscale_array = (unsigned char *) malloc(kmax);
+  for(k = 0; k < (kmax>>2); k++)								// x>>2 <=> x/4
      738:	38bff61e 	bne	r7,r2,714 <__alt_data_end+0xff000714>
   {
 	  gray = ALT_CI_CUSTOM_GRAY_0(pixels[k*2], pixels[k*2+1]);
