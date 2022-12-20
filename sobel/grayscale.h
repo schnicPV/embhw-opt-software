@@ -8,7 +8,7 @@
 #ifndef GRAYSCALE_H_
 #define GRAYSCALE_H_
 
-void conv_grayscale(void *picture,
+unsigned char* conv_grayscale(void *picture,
 		            int width,
 		            int height);
 int get_grayscale_width();

@@ -13,7 +13,7 @@ unsigned char *grayscale_array;
 int grayscale_width = 0;
 int grayscape_height = 0;
 
-void conv_grayscale(void *picture,
+unsigned char* conv_grayscale(void *picture,
                 int width,
                 int height) {
   unsigned int k,gray;
@@ -29,6 +29,7 @@ void conv_grayscale(void *picture,
 	  gray = ALT_CI_CUSTOM_GRAY_0(pixels[k*2], pixels[k*2+1]);
 	  IOWR_32DIRECT(grayscale_array, k*4, gray);
   }
+  return grayscale_array;
 }
 
 

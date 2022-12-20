@@ -42,6 +42,8 @@ int main()
   alt_u32 end_sobel_th = 0;
   alt_u32 start_grayscale = 0;
   alt_u32 end_grayscale = 0;
+  alt_u32 start_transfer = 0;
+  alt_u32 end_transfer = 0;
 
   init_LCD();
   init_camera();
@@ -128,16 +130,16 @@ int main()
 		      	  	   break;
 		      default: alt_timestamp_start();
 		    	  	   start_grayscale = alt_timestamp();
-		    	  	   conv_grayscale((void *)image,
-	                                  cam_get_xsize()>>1,
-	                                  cam_get_ysize());
+		    	  	   grayscale = conv_grayscale((void *)image,
+	                                  	  	  	  cam_get_xsize()>>1,
+												  cam_get_ysize());
 		    	  	   end_grayscale = alt_timestamp();
-                       grayscale = get_grayscale_picture();
+//                       grayscale = get_grayscale_picture();
 
                        alt_timestamp_start();
                        start_sobel_x = alt_timestamp();
 //                       sobel_x(grayscale);
-                       sobel_complete(grayscale, 128);
+                       grayscale = sobel_complete(grayscale, 128);
                        end_sobel_x = alt_timestamp();
 
 //                       alt_timestamp_start();
@@ -150,14 +152,21 @@ int main()
 //                       sobel_threshold(128);
 //                       end_sobel_th = alt_timestamp();
 
-                       grayscale=GetSobelResult();
+//                       grayscale=GetSobelResult();
+                       alt_timestamp_start();
+                       start_transfer = alt_timestamp();
 		               transfer_LCD_with_dma(&grayscale[16520],
 		      		                	cam_get_xsize()>>1,
 		      		                	cam_get_ysize(),1);
+		               end_transfer = alt_timestamp();
+
+		               alt_timestamp_start();
+		               start_sobel_y = alt_timestamp();
 		      	  	   if ((current_mode&DIPSW_SW8_MASK)!=0) {
 		      	  		  vga_set_swap(VGA_QuarterScreen|VGA_Grayscale);
 		      	  		  vga_set_pointer(grayscale);
 		      	  	   }
+		      	  	   end_sobel_y = alt_timestamp();
 		      	  	   break;
 		      }
 		      //print differences
@@ -167,8 +176,8 @@ int main()
 //		      printf("[sobel_y]   : dC = %d\n",end_sobel_y-start_sobel_y);
 //		      printf("[sobel_th]  : dC = %d\n",end_sobel_th-start_sobel_th);
 		      printf("[grayscale] : dC = %d\n",end_grayscale-start_grayscale);
-
-		      //while(wait_cnt < max_wait) { wait_cnt++; }
+		      printf("[transfer]  : dC = %d\n",end_transfer-start_transfer);
+		      printf("[vga]       : dC = %d\n",end_sobel_y-start_sobel_y);
 
 		      // reset timervalues
 		      start_sobel_x = 0;
@@ -179,7 +188,8 @@ int main()
 			  end_sobel_th = 0;
 			  start_grayscale = 0;
 			  end_grayscale = 0;
-			  wait_cnt = 0;
+			  start_transfer = 0;
+			  end_transfer = 0;
 		  }
 	  }
   } while (1);

@@ -166,7 +166,7 @@ void sobel_threshold(short threshold) {
 	}
 }
 
-void sobel_complete( unsigned char *source, short threshold)
+unsigned char* sobel_complete( unsigned char *source, short threshold)
 {
    short result = 0;
    unsigned int k, a, b;
@@ -211,6 +211,7 @@ void sobel_complete( unsigned char *source, short threshold)
      // custom instruction
      sobel_result[k] = (unsigned short) ALT_CI_CUSTOM_SOBEL_0(a, b);
    }
+   return sobel_result;
 }
 
 unsigned short *GetSobel_rgb() {
