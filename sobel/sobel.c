@@ -173,37 +173,6 @@ unsigned char* sobel_complete( unsigned char *source, short threshold)
    unsigned int kmax = sobel_height*sobel_width;
    for(k = 1; k<kmax; k++)
    {
-     /*
-     // sobel_x in-lining
-     result -= source[k-sobel_width-1];		// ( y-1 | x-1 )
-     // omitted line due to result += 0;	// ( y-1 | x   )
-     result += source[k-sobel_width+1];		// ( y-1 | x+1 )
-     result -= (source[k-1]<<1);			// ( y   | x-1 )
-     // omitted line due to result += 0;	// ( y   | x   )
-     result += (source[k+1]<<1);			// ( y   | x+1 )
-     result -= source[k+sobel_width-1];		// ( y+1 | x-1 )
-     // omitted line due to result += 0;	// ( y+1 | x   )
-     result += source[k+sobel_width+1];		// ( y+1 | x+1 )
-     sobel_x_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
-     result = 0;
-
-     // sobel_y in-lining
-     result += source[k-sobel_width-1];		// ( y-1 | x-1 )
-     result += (source[k-sobel_width]<<1);	// ( y-1 | x   )
-     result += source[k-sobel_width+1];		// ( y-1 | x+1 )
-     // omitted line due to result += 0;	// ( y   | x-1 )
-     // omitted line due to result += 0;	// ( y   | x   )
-     // omitted line due to result += 0;	// ( y   | x+1 )
-     result -= source[k+sobel_width-1];		// ( y+1 | x-1 )
-     result -= (source[k+sobel_width]<<1);	// ( y+1 | x   )
-     result -= source[k+sobel_width+1];		// ( y+1 | x+1 )
-     sobel_y_result[k] = (result + (result >> 31)) ^ (result >> 31);	// stock directly abs value in result array (for threshold purpose)
-     result = 0;
-
-     // sobel_threshold in-lining
-     sobel_result[k] = ((sobel_x_result[k]+sobel_y_result[k]) > threshold) ? 0xFF : 0;
-     */
-
      // prepare 2 x 32 bit numbers which contain all pixels
      a = (source[k-sobel_width-1]<<24) + (source[k-sobel_width]<<16) + (source[k-sobel_width+1]<<8) + (source[k-1]);
      b = (source[k+1]<<24) + (source[k+sobel_width-1]<<16) + (source[k+sobel_width]<<8) + (source[k+sobel_width+1]);

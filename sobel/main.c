@@ -12,16 +12,6 @@
 #include "sys/alt_timestamp.h" 		// include due to profiling
 #include "alt_types.h" 				// include due to profiling
 
-//extern const char gx_array[3][3];
-//extern const char gy_array[3][3];
-//extern short *sobel_x_result;
-//extern short *sobel_y_result;
-//extern int sobel_width;
-//extern int sobel_height;
-//
-//const char * pgx_array = &gx_array;
-//const char * pgy_array = &gy_array;
-
 int main()
 {
   void *buffer1,*buffer2,*buffer3,*buffer4;
